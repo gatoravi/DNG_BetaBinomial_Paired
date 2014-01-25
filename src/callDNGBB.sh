@@ -1,0 +1,10 @@
+#~/files/DeNovoGear/BetaBinomial/BetaBinomial_paired/build/src/denovogear-bb bb_paired --op_calls_file temp.op --ped temp.ped --alphaRR 3.766 --betaRR 148.369 --alphaRA 6.702027 --betaRA 9.301758 --alphaAA  204.776 --betaAA 1 --normal_bam /home/comp/tdlab/ahughes/DeNovoGear_Test_Data/PAMBCT_Non_Cancer.bam --tumor_bam /home/comp/tdlab/ahughes/DeNovoGear_Test_Data/PAMBCT_Leukemia.bam --ref ~/files/20110915_CEUtrio/WEx/ref/hg19.fa --mpileup_f mp.out
+
+# ~/files/DeNovoGear/BetaBinomial/BetaBinomial_paired/build/src/denovogear-bb bb_paired --op_calls_file temp.op --ped temp.ped --alphaRR 3.766 --betaRR 148.369 --alphaRA 6.702027 --betaRA 9.301758 --alphaAA  204.776 --betaAA 1 --normal_bam t2.bam --tumor_bam /home/comp/tdlab/ahughes/DeNovoGear_Test_Data/PAMBCT_Leukemia.bam --ref ~/files/20110915_CEUtrio/WEx/ref/hg19.fa
+
+# ~/files/DeNovoGear/BetaBinomial/BetaBinomial_paired/build/src/denovogear-bb bb_paired --op_calls_file temp.op --ped temp.ped --alphaRR 3.766 --betaRR 148.369 --alphaRA 6.702027 --betaRA 9.301758 --alphaAA  204.776 --betaAA 1 --normal_bam t4.bam --tumor_bam t4.bam --ref ~/files/20110915_CEUtrio/WEx/ref/hg19.fa
+
+#~/files/DeNovoGear/BetaBinomial/BetaBinomial_paired/build/src/denovogear-bb bb_paired --op_calls_file temp.op --ped temp.ped --alphaRR 3.766 --betaRR 148.369 --alphaRA 6.702027 --betaRA 9.301758 --alphaAA  204.776 --betaAA 1 --normal_bam /home/comp/tdlab/ahughes/DeNovoGear_Test_Data/PAMBCT_Non_Cancer.bam --tumor_bam /home/comp/tdlab/ahughes/DeNovoGear_Test_Data/PAMBCT_Leukemia.bam --ref ~/files/20110915_CEUtrio/WEx/ref/hg19.fa --skip_mpileup true --PP_cutoff 0.1 --RD_cutoff 10 > drew.dngbbop.3.txt
+
+
+/home/comp/exlab/aramu/files/DeNovoGear/BetaBinomial/BetaBinomial_paired/build/src/denovogear-bb bb_paired --ped ped1.ped --normal_bam /home/comp/tdlab/ahughes/DeNovoGear_Test_Data/PAMBCT_Non_Cancer.bam --tumor_bam /home/comp/tdlab/ahughes/DeNovoGear_Test_Data/PAMBCT_Leukemia.bam --ref /home/comp/exlab/aramu/files/20110915_CEUtrio/WEx/ref/hg19.fa --PP_cutoff 0 --RD_cutoff 10 --skip_mpileup true > drew.dngOP.ppcutoffzero.txt
