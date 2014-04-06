@@ -3,7 +3,7 @@ INCLUDE(CheckFunctionExists)
 INCLUDE(CheckLibraryExists)
 
 
-set(SAMTOOLS_DIR "/home/vagrant/samtools-0.1.18")
+set(SAMTOOLS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/home/vagrant/samtools-0.1.18")
 
 #RInside_cmake
 set(NUM_TRUNC_CHARS 2)
@@ -42,7 +42,6 @@ string(LENGTH ${RLDFLAGS} RLDFLAGS_LEN)
 if (${RLDFLAGS} MATCHES "[-][L]([^ ;])+")
   string(SUBSTRING ${CMAKE_MATCH_0} ${NUM_TRUNC_CHARS} -1 RLDFLAGS_L)
   string(STRIP ${RLDFLAGS_L} RLDFLAGS_L )
-  message(STATUS ${RLDFLAGS_L})
   link_directories(${RLDFLAGS_L} )
 endif()
 
@@ -220,7 +219,6 @@ TARGET_LINK_LIBRARIES(denovogear-bb "${SAMTOOLS_DIR}/bcftools/libbcf.a")
 TARGET_LINK_LIBRARIES(denovogear-bb "${SAMTOOLS_DIR}/libbam.a")
 TARGET_LINK_LIBRARIES(denovogear-bb ${ZLIB_LIBRARIES})
 TARGET_LINK_LIBRARIES(denovogear-bb ${CMAKE_REQUIRED_LIBRARIES})
-message(${RBASELIB} ${RLDFLAGS_l} ${RINSIDELIBS_l} ${RCPPLIBS_l})
 target_link_libraries(denovogear-bb ${RLDFLAGS_l})
 target_link_libraries(denovogear-bb ${BLAS_LIBS})
 target_link_libraries(denovogear-bb ${LAPACK_LIBS})
