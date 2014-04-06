@@ -3,7 +3,7 @@ INCLUDE(CheckFunctionExists)
 INCLUDE(CheckLibraryExists)
 
 
-set(SAMTOOLS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/home/vagrant/samtools-0.1.18")
+set(SAMTOOLS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/samtools-0.1.18")
 
 #RInside_cmake
 set(NUM_TRUNC_CHARS 2)

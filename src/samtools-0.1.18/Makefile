@@ -2,7 +2,7 @@ CC=			gcc
 CFLAGS=		-g -Wall -O2 #-m64 #-arch ppc
 DFLAGS=		-D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_USE_KNETFILE -D_CURSES_LIB=1
 KNETFILE_O=	knetfile.o
-LOBJS=          bgzf.o kstring.o bam_aux.o bam.o bam_import.o sam.o bam_index.o bam_pileup.o bam_lpileup.o bam_md.o razf.o faidx.o bedidx.o $(KNETFILE_O) bam_sort.o sam_header.o bam_reheader.o kprobaln.o bam_cat.o bam_plcmd.o bam2bcf.o sample.o bam2bcf_indel.o errmod.o fet.o sam_view.o
+LOBJS=          bgzf.o kstring.o bam_aux.o bam.o bam_import.o sam.o bam_index.o bam_pileup.o bam_lpileup.o bam_md.o razf.o faidx.o bedidx.o $(KNETFILE_O) bam_sort.o sam_header.o bam_reheader.o kprobaln.o bam_cat.o bam_plcmd.o bam2bcf.o sample.o bam2bcf_indel.o errmod.o bcftools/fet.o sam_view.o
 #LOBJS=		bgzf.o kstring.o bam_aux.o bam.o bam_import.o sam.o bam_index.o	\
 			bam_pileup.o bam_lpileup.o bam_md.o razf.o faidx.o bedidx.o \
 			$(KNETFILE_O) bam_plcmd.o bam_sort.o sam_header.o bam_reheader.o kprobaln.o bam_cat.o bam2bcf.o sample.o bam2bcf_indel.o errmod.o fet.o
