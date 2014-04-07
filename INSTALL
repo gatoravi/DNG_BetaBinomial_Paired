@@ -7,12 +7,12 @@ To clone this repo:
 Type 
 	git clone https://github.com/gatoravi/DNG_BetaBinomial_Paired.git
 
-This code depends on the RInside, RCpp and Samtools libraries.
+This code depends on the RInside, Rcpp, RcppClassic and Samtools libraries.
 Currently Samtools is packaged with this package but this is poised to change in the future.
 
-To Install Rcpp and RInside:
+To Install Rcpp, RcppClassic and RInside:
 1. Make sure you have a working version of R, you need R version>=3.0.
-2. Open R and run "install.packages("Rcpp")", "install.packages("RInside")
+2. Open R and run "install.packages("Rcpp")", "install.packages("RcppClassic") and "install.packages("RInside")
 
 Samtools is a part of this repo, cd into the samtools directory and run make, do the same for bcftools.
 cd src/samtools-0.1.18/

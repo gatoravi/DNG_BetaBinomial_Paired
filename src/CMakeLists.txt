@@ -60,7 +60,7 @@ execute_process(COMMAND ${RSCRIPT_PATH} -e "Rcpp:::CxxFlags()"
 string(SUBSTRING ${RCPPINCL} ${NUM_TRUNC_CHARS} -1 RCPPINCL)
 include_directories(${RCPPINCL})
 
-execute_process(COMMAND ${RSCRIPT_PATH} -e "Rcpp:::LdFlags()"
+execute_process(COMMAND ${RSCRIPT_PATH} -e "RcppClassic:::LdFlags()"
   OUTPUT_VARIABLE RCPPLIBS)
 
 execute_process(COMMAND ${RSCRIPT_PATH} -e "RInside:::CxxFlags()"
