@@ -2,6 +2,7 @@ INCLUDE(CheckIncludeFile)
 INCLUDE(CheckFunctionExists)
 INCLUDE(CheckLibraryExists)
 
+#add_definitions(-DDEBUG)
 
 set(SAMTOOLS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/samtools-0.1.18")
 

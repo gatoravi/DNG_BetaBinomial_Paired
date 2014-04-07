@@ -36,12 +36,26 @@ void pair_like(pair_t tumor, pair_t normal, vector<vector<string> > &tgtPair,
   strcpy( ref_name, tumor.chr); // Name of the reference sequence
     
   //Load Likelihood matrices L(D|Gt) and L(D|Gn) 
-  for (j = 0; j != 10; ++j)	
-  	a[j]=pow(10, -normal.lk[j]/10.); 
+  #ifdef DEBUG
+	cout<<"\nNormal\n";
+  #endif
+  for (j = 0; j != 10; ++j) {
+	#ifdef DEBUG
+		cout<<normal.lk[j]<<"\t";
+	#endif
+	a[j]=pow(10, -normal.lk[j]/10.); 
+  }
   N<<a;
   
-  for (j = 0; j != 10; ++j) 
-  	a[j] = pow(10, -tumor.lk[j]/10.);
+  #ifdef DEBUG
+	cout<<"\nTumor\n";
+  #endif
+  for (j = 0; j != 10; ++j) { 
+  	#ifdef DEBUG
+		cout<<tumor.lk[j]<<"\t";
+	#endif
+	a[j] = pow(10, -tumor.lk[j]/10.);
+  }
   T<<a;
 
   P = KP(N, T); // 10 * 10

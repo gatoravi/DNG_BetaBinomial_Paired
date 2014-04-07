@@ -146,10 +146,6 @@ int AlphaBeta::parseMpileupOP()
   cerr<<endl<<"RR(resized) n size "<<RR_n.size()<<" RR k size "<<RR_k.size();  
   cerr<<endl;
   //#endif
-  /* int argc1 = 0;
-  char arg1[] = "nothing";
-  char* argv1[] = {arg1}; */
-  //RInside Rinst1(argc1, argv1);
   estimateAlphaBeta(RA_k, RA_n, *RInst, RAalpha, RAbeta);
   estimateAlphaBeta(AA_k, AA_n, *RInst, AAalpha, AAbeta);
   estimateAlphaBeta(RR_k, RR_n, *RInst, RRalpha, RRbeta);

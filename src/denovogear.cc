@@ -1,4 +1,3 @@
-
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -28,7 +27,7 @@ using namespace RBD_LIBRARIES;
 #endif
 
 #ifndef VERSION
-#define VERSION "Denovogear0.5.2"
+#define VERSION "Denovogear-bb-0.01"
 #endif
 
 int RD_cutoff = 10; // cutoff for the read depth filter
@@ -44,30 +43,14 @@ double mu_scale = 1.0; // scaling factor for indel priors
 
 void usage()
 {
-  cerr<<"\nUsage:\n";
-  cerr<<"Autosomes:\n";
-  cerr<<"\t./denovogear dnm auto --bcf bcf_f --ped ped_f\n";
-  cerr<<"X chromosome in male offspring:\n";
-  cerr<<"\t./denovogear dnm XS --bcf bcf_f --ped ped_f\n";
-  cerr<<"X chromosome in female offspring:\n";
-  cerr<<"\t./denovogear dnm XD --bcf bcf_f --ped ped_f\n";
-  cerr<<"BetaBinomial_Paired: bb_paired\n";
-	cerr<<"Phaser:\n";
-	cerr<<"\t./denovogear phaser --dnm dnm_f --pgt pgt_f --bam bam_f --window INT[1000]\n";
-	cerr<<"\nInput:\n";
-	cerr<<"DNM:\n";
-	cerr<<"--ped:\t Ped file to describe relationship between the samples.\n";
-	cerr<<"--bcf:\t BCF file from samtools, contains per-sample read depths and genotype likelihoods.\n";
-	cerr<<"Phaser:\n";
-	cerr<<"--dnm: Tab delimited list of denovo mutations to be phased, format: chr pos inherited_base denovo_base.[example: 1 2000 A C]\n";
-	cerr<<"--pgt: Tab delimited genotypes of child and parents at SNP sites near denovo sites, format: chr pos GT_child GT_parent1 GT_parent2.[example: 1 2000 AC AC AA]\n";
-	cerr<<"\nOutput:\n";
-	cerr<<"--output_vcf:\t vcf file to store the output.\n";
-	cerr<<"\nParameters:\n";
-	cerr<<"--snp_mrate:\t Mutation rate prior for SNPs. [1e-8]\n";
-	cerr<<"--indel_mrate:\t Mutation rate prior for INDELs. [1e-9]\n";
-	cerr<<"--pair_mrate:\t Mutation rate prior for paired sample analysis. [1e-9]\n";
-	cerr<<"--indel_mu_scale:\t Scaling factor for indel mutation rate. [1]\n";
+	cerr<<"\n\nUsage:\n";
+	cerr<<"\tdenovogear-bb bb_paired --ped ped_f --tumor_bam tumor_bam_f1 --normal_bam normal_bam_f1 --ref ref.fa\n";
+	cerr<<"\nInputs(required):\n";
+	cerr<<"--ped:\t Ped file containing names and relationship of the samples\n";
+	cerr<<"--tumor_bam:\t BAM file for the tumor sample\n"; 
+	cerr<<"--normal_bam:\t BAM file for the normal sample\n"; 
+	cerr<<"--ref:\t Reference FASTA file\n"; 
+	cerr<<"\nOptional Parameters:\n";
 	cerr<<"--pp_cutoff:\t Posterior probability threshold. [0.0001]\n";
 	cerr<<"--rd_cutoff:\t Read depth filter, sites where either one of the sample have read depth less than this threshold are filtered out. [10]\n";
 	cerr<<endl;
@@ -371,7 +354,7 @@ int mainDNG(int argc, char *argv[])
 
 int main(int argc, char* argv[])
 {
-  cerr<<VERSION;  
+  cerr<<VERSION<<endl;  
   if(argc >= 2) {
   	if (strcmp(argv[1], "dnm") == 0) return mainDNG(argc-1, argv+1);
   	else if (strcmp(argv[1], "phaser") == 0) return mainPhaser(argc-1, argv+1);

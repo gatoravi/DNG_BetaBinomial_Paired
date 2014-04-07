@@ -204,7 +204,6 @@ int DNGCaller::parseLine(string l, t_variant_info& vi1)
   }
   if(vi1.alt_RD == 0)
     vi1.alt = "N";
-  //vi1.print();
   return 0;
 }
 
@@ -244,12 +243,17 @@ int DNGCaller::convertVI2paired(t_variant_info vi1, pair_t& pt1, std::vector<dou
   GT_lik["TT"] =  MIN_PHRED_LIKE;
 
   string RR = vi1.ref + vi1.ref;
-  string RA = vi1.ref + vi1.alt;
+  string RA;
+  if(vi1.ref <= vi1.alt) {
+  	RA = vi1.ref + vi1.alt;
+  } else {
+  	RA = vi1.alt + vi1.ref;
+  }	
   string AA = vi1.alt + vi1.alt;
 
-  //std::cout<<"RR "<<RR;
-  //std::cout<<"RA "<<RA;
-  //std::cout<<"AA "<<AA;
+  std::cout<<"RR "<<RR;
+  std::cout<<"RA "<<RA;
+  std::cout<<"AA "<<AA;
   //std::cout<<"1"<<endl;
   //std::cout<<ab.size()<<endl;
 

@@ -19,43 +19,93 @@ static inline int printw(int c, FILE *fp)
 	for (x = 0; x < l/2; ++x) {
 		int y = buf[x]; buf[x] = buf[l-1-x]; buf[l-1-x] = y;
 	}
+	strcpy(buf, "");
 	fputs(buf, fp);
 	return 0;
 }
 
-static inline void pileup_seq(const bam_pileup1_t *p, int pos, int ref_len, const char *ref)
+static inline void count_base( char c, int* a_count, int* c_count, int* g_count, int* t_count)
+{
+  switch(c) {
+  case 'A':
+    *a_count += 1;
+    break;
+  case 'C':
+    *c_count += 1;
+    break;
+  case 'G':
+    *g_count += 1;
+    break;
+  case 'T':
+    *t_count += 1;
+    break;
+  case 'a':
+    *a_count += 1;
+    break;
+  case 'c':
+    *c_count += 1;
+    break;
+  case 'g':
+    *g_count += 1;
+    break;
+  case 't':
+    *t_count += 1;
+    break;
+  default:
+    break;
+  }
+}
+static inline void pileup_seq(const bam_pileup1_t *p, int pos, int ref_len, const char *ref, 
+			      char* pileup_seq1, int* a_count, int* c_count, int* g_count, int* t_count, char ref_base)
 {
 	int j;
 	if (p->is_head) {
-		putchar('^');
-		putchar(p->b->core.qual > 93? 126 : p->b->core.qual + 33);
+		//putchar('^');
+		//putchar(p->b->core.qual > 93? 126 : p->b->core.qual + 33);
 	}
 	if (!p->is_del) {
+	  //*a_count += 3;
 		int c = bam_nt16_rev_table[bam1_seqi(bam1_seq(p->b), p->qpos)];
 		if (ref) {
 			int rb = pos < ref_len? ref[pos] : 'N';
-			if (c == '=' || bam_nt16_table[c] == bam_nt16_table[rb]) c = bam1_strand(p->b)? ',' : '.';
-			else c = bam1_strand(p->b)? tolower(c) : toupper(c);
+			if (c == '=' || bam_nt16_table[c] == bam_nt16_table[rb])  {
+			  c = bam1_strand(p->b)? ',' : '.';
+			  count_base(ref_base, a_count, c_count, g_count, t_count);
+			}
+			else {
+			  c = bam1_strand(p->b)? tolower(c) : toupper(c);
+			  count_base((char)c, a_count, c_count, g_count, t_count);
+			}
 		} else {
-			if (c == '=') c = bam1_strand(p->b)? ',' : '.';
-			else c = bam1_strand(p->b)? tolower(c) : toupper(c);
+		  if (c == '=') { 
+		    c = bam1_strand(p->b)? ',' : '.'; 
+		    count_base(ref_base, a_count, c_count, g_count, t_count);
+		  }
+		  else {
+		    c = bam1_strand(p->b)? tolower(c) : toupper(c);
+		    count_base((char)c, a_count, c_count, g_count, t_count);
+		  }
 		}
-		putchar(c);
-	} else putchar(p->is_refskip? (bam1_strand(p->b)? '<' : '>') : '*');
+		//putchar(c);
+		char c1 = (char)c;
+		strcat(pileup_seq1, &c1);
+		//scprintf("%sstr\n\t%c\n", pileup_seq1, c1);
+	} //else //putchar(p->is_refskip? (bam1_strand(p->b)? '<' : '>') : '*');
 	if (p->indel > 0) {
-		putchar('+'); printw(p->indel, stdout);
-		for (j = 1; j <= p->indel; ++j) {
-			int c = bam_nt16_rev_table[bam1_seqi(bam1_seq(p->b), p->qpos + j)];
-			putchar(bam1_strand(p->b)? tolower(c) : toupper(c));
-		}
-	} else if (p->indel < 0) {
-		printw(p->indel, stdout);
-		for (j = 1; j <= -p->indel; ++j) {
-			int c = (ref && (int)pos+j < ref_len)? ref[pos+j] : 'N';
-			putchar(bam1_strand(p->b)? tolower(c) : toupper(c));
-		}
-	}
-	if (p->is_tail) putchar('$');
+		//putchar('+'); 
+	  //printw(p->indel, stdout);
+		//for (j = 1; j <= p->indel; ++j) {
+		  ///int c = bam_nt16_rev_table[bam1_seqi(bam1_seq(p->b), p->qpos + j)];
+			//putchar(bam1_strand(p->b)? tolower(c) : toupper(c));
+			//}
+		} else if (p->indel < 0) {
+	  printw(p->indel, stdout);
+	  //for (j = 1; j <= -p->indel; ++j) {
+	  //	int c = (ref && (int)pos+j < ref_len)? ref[pos+j] : 'N';
+			//putchar(bam1_strand(p->b)? tolower(c) : toupper(c));
+	  //	}
+	  }
+	//if (p->is_tail) //putchar('$');
 }
 
 #include <assert.h>
@@ -78,6 +128,11 @@ static inline void pileup_seq(const bam_pileup1_t *p, int pos, int ref_len, cons
 void *bed_read(const char *fn);
 void bed_destroy(void *_h);
 int bed_overlap(const void *_h, const char *chr, int beg, int end);
+
+int RD_CUTOFF = 10;
+char OP_FILE[1000];
+
+
 
 typedef struct {
 	int max_mq, min_mq, flag, min_baseQ, capQ_thres, max_depth, max_indel_depth;
@@ -174,8 +229,16 @@ static void group_smpl(mplp_pileup_t *m, bam_sample_t *sm, kstring_t *buf,
 	}
 }
 
-static int mpileup(mplp_conf_t *conf, int n, char **fn)
+static int mpileup(mplp_conf_t *conf, int n, char **fn, char* pileup_sequence1)
 {
+
+        FILE* fp_op;
+	fp_op = fopen(OP_FILE, "w");
+	if(fp_op == NULL) {
+	  printf("Unable to open mpileup op file ! %s\n", OP_FILE);
+	  exit(1);
+	}
+
 	extern void *bcf_call_add_rg(void *rghash, const char *hdtext, const char *list);
 	extern void bcf_call_del_rghash(void *rghash);
 	mplp_aux_t **data;
@@ -325,44 +388,56 @@ static int mpileup(mplp_conf_t *conf, int n, char **fn)
 				}
 			}
 		} else {
-			printf("%s\t%d\t%c", h->target_name[tid], pos + 1, (ref && pos < ref_len)? ref[pos] : 'N');
 			for (i = 0; i < n; ++i) {
 				int j;
-				printf("\t%d\t", n_plp[i]);
+				strcpy(pileup_sequence1, ""); //AVI
+				char ref2 = (ref && pos < ref_len)? ref[pos] : 'N';
+				int *a_count, *c_count, *g_count, *t_count;
+				int a = 0, c = 0, g = 0 , t = 0;
+				a_count = &a;
+				c_count = &c;
+				g_count = &g;
+				t_count = &t;
+				//printf("\t%d\t", n_plp[i]);
 				if (n_plp[i] == 0) {
-					printf("*\t*"); // FIXME: printf() is very slow...
-					if (conf->flag & MPLP_PRINT_POS) printf("\t*");
+				  //printf("*\t*"); // FIXME: printf() is very slow...
+				  //if (conf->flag & MPLP_PRINT_POS) printf("\t*");
 				} else {
 					for (j = 0; j < n_plp[i]; ++j)
-						pileup_seq(plp[i] + j, pos, ref_len, ref);
-					putchar('\t');
+					  pileup_seq(plp[i] + j, pos, ref_len, ref, pileup_sequence1, a_count, c_count, g_count, t_count, ref2);
+					////putchar('\t');
 					for (j = 0; j < n_plp[i]; ++j) {
 						const bam_pileup1_t *p = plp[i] + j;
 						int c = bam1_qual(p->b)[p->qpos] + 33;
 						if (c > 126) c = 126;
-						putchar(c);
+						////putchar(c);
 					}
 					if (conf->flag & MPLP_PRINT_MAPQ) {
-						putchar('\t');
+						////putchar('\t');
 						for (j = 0; j < n_plp[i]; ++j) {
 							int c = plp[i][j].b->core.qual + 33;
 							if (c > 126) c = 126;
-							putchar(c);
+							////putchar(c);
 						}
 					}
 					if (conf->flag & MPLP_PRINT_POS) {
-						putchar('\t');
+						////putchar('\t');
 						for (j = 0; j < n_plp[i]; ++j) {
-							if (j > 0) putchar(',');
-							printf("%d", plp[i][j].qpos + 1); // FIXME: printf() is very slow...
+						  //if (j > 0) ////putchar(',');
+							  //printf("%d", plp[i][j].qpos + 1); // FIXME: printf() is very slow...
 						}
 					}
 				}
+				if(n_plp[i] >= RD_CUTOFF ) {
+				  fprintf(fp_op, "%s\t%d\t%d\t%c", h->target_name[tid], pos + 1, n_plp[i], (ref && pos < ref_len)? ref[pos] : 'N');
+				  fprintf(fp_op, "\t%s", pileup_sequence1);
+				  fprintf(fp_op, "\t%d\t%d\t%d\t%d\n", *a_count, *c_count, *g_count, *t_count);
+				}
 			}
-			putchar('\n');
+			////putchar('\n');
 		}
 	}
-
+	fclose(fp_op);
 	bcf_close(bp);
 	bam_smpl_destroy(sm); free(buf.s);
 	for (i = 0; i < gplp.n; ++i) free(gplp.plp[i]);
@@ -429,9 +504,12 @@ static int read_file_list(const char *file_list,int *n,char **argv[])
 }
 #undef MAX_PATH_LEN
 
-int bam_mpileup(int argc, char *argv[])
+char* bam_mpileup(int argc, char *argv[], int rd_cutoff, const char* op_f)
 {
-	int c;
+  char pileup_seq[10000]; //AVI
+  RD_CUTOFF = rd_cutoff;
+  strcpy(OP_FILE, op_f);
+  int c;
     const char *file_list = NULL;
     char **fn = NULL;
     int nfiles = 0, use_orphan = 0;
@@ -445,6 +523,7 @@ int bam_mpileup(int argc, char *argv[])
 	mplp.openQ = 40; mplp.extQ = 20; mplp.tandemQ = 100;
 	mplp.min_frac = 0.002; mplp.min_support = 1;
 	mplp.flag = MPLP_NO_ORPHAN | MPLP_REALN;
+	optind = 0;
 	while ((c = getopt(argc, argv, "Agf:r:l:M:q:Q:uaRC:BDSd:L:b:P:o:e:h:Im:F:EG:6Os")) >= 0) {
 		switch (c) {
 		case 'f':
@@ -518,6 +597,7 @@ int bam_mpileup(int argc, char *argv[])
 		fprintf(stderr, "       -O           output base positions on reads (disabled by -g/-u)\n");
 		fprintf(stderr, "       -s           output mapping quality (disabled by -g/-u)\n");
 		fprintf(stderr, "       -S           output per-sample strand bias P-value in BCF (require -g/-u)\n");
+
 		fprintf(stderr, "       -u           generate uncompress BCF output\n");
 		fprintf(stderr, "\nSNP/INDEL genotype likelihoods options (effective with `-g' or `-u'):\n\n");
 		fprintf(stderr, "       -e INT       Phred-scaled gap extension seq error probability [%d]\n", mplp.extQ);
@@ -534,13 +614,13 @@ int bam_mpileup(int argc, char *argv[])
 	}
     if (file_list) {
         if ( read_file_list(file_list,&nfiles,&fn) ) return 1;
-        mpileup(&mplp,nfiles,fn);
+        mpileup(&mplp, nfiles, fn, pileup_seq);
         for (c=0; c<nfiles; c++) free(fn[c]);
         free(fn);
-    } else mpileup(&mplp, argc - optind, argv + optind);
+    } else mpileup(&mplp, argc - optind, argv + optind, pileup_seq);
 	if (mplp.rghash) bcf_str2id_thorough_destroy(mplp.rghash);
 	free(mplp.reg); free(mplp.pl_list);
 	if (mplp.fai) fai_destroy(mplp.fai);
 	if (mplp.bed) bed_destroy(mplp.bed);
-	return 0;
+	return pileup_seq;
 }

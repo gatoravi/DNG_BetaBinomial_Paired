@@ -39,11 +39,11 @@ void trio_like_snp( qcall_t child, qcall_t mom, qcall_t dad, int flag,
     
   //Load Likelihood matrices L(D|Gm), L(D|Gd) and L(D|Gc)
   for (j = 0; j != 10; ++j)	{ 
-    #ifdef DEBUG_ENABLED
-    cout<<"\n"<<" mom lik "<<mom.lk[j]<<" "<<pow(10, -mom.lk[j]/10); 
-    cout<<" dad lik "<<dad.lk[j]<<" "<<pow(10, -dad.lk[j]/10);
-    cout<<" child lik "<<child.lk[j]<<" "<<pow(10, -child.lk[j]/10); 
-  	#endif    
+    #ifdef DEBUG
+    	cout<<"\n"<<" mom lik "<<mom.lk[j]<<" "<<pow(10, -mom.lk[j]/10); 
+    	cout<<" dad lik "<<dad.lk[j]<<" "<<pow(10, -dad.lk[j]/10);
+    	cout<<" child lik "<<child.lk[j]<<" "<<pow(10, -child.lk[j]/10); 
+    #endif    
     a[j]=pow(10,-mom.lk[j]/10.0); 
   }  
   M<<a;  

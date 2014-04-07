@@ -158,15 +158,16 @@ int BBPaired::parseArguments(int argc, char* argv[], ArgsPassed& A1)
 
 
 
-/* calls mpileup on normal BAM */
+/* calls mpileup on normal BAM - minQ 20*/
 int BBPaired::callMpileup(string bam1, string mp_op)
 {
   char arg1[] = "mpileup\0";
   char arg2[] = "-f\0";
   char* arg3 = strdup(ref_f.c_str());
-  cout<<"\narg3 "<<arg3;
   char* arg4 = strdup(bam1.c_str());
-  char* argv1[] = {arg1, arg2, arg3, arg4};
+  char arg5[] = "-Q\0";
+  char arg6[] = "20\0";
+  char* argv1[] = {arg1, arg2, arg3, arg4, arg5, arg6};
   int argc1 = sizeof(argv1)/sizeof(argv1[0]);
   bam_mpileup(argc1, argv1, rd_cutoff, mp_op.c_str());
   return 0;

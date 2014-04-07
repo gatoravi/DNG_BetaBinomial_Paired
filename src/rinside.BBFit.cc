@@ -14,7 +14,7 @@
 int BBFit(std::vector<int> k1, std::vector<int> n1, RInside& R, double& alpha, double& beta) 
 {
     //    RInside R(argc, argv);                // create an embedded R instance 
-    std::string load = "suppressMessages(source(\"/home/comp/exlab/aramu/files/Src/BBFit.R\"))";
+    std::string load = "suppressMessages(source(\"~/src/BBFit.R\"))";
     R.parseEvalQ(load);              // load library, no return value
     R["k1"] = k1;                   
     R["n1"] = n1;                   

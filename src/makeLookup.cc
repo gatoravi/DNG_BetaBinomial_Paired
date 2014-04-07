@@ -1881,7 +1881,7 @@ void makePairedLookup(double pairMrate, vector<vector<string > > & tgt, lookup_p
 			}
 
 #ifdef LOOKUP_ENABLED
-			fout_pair<<n_alleles[index]<<" "<<g_gts<<" "<<d_flag[index];
+			fout_pair<<g_gts<<" "<<d_flag[index];
 			fout_pair<<" "<<n_flag[index]<<" "<<priors[index]<<"\n";
 #endif
 
