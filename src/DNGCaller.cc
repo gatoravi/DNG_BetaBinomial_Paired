@@ -251,9 +251,6 @@ int DNGCaller::convertVI2paired(t_variant_info vi1, pair_t& pt1, std::vector<dou
   }	
   string AA = vi1.alt + vi1.alt;
 
-  std::cout<<"RR "<<RR;
-  std::cout<<"RA "<<RA;
-  std::cout<<"AA "<<AA;
   //std::cout<<"1"<<endl;
   //std::cout<<ab.size()<<endl;
 
@@ -262,6 +259,9 @@ int DNGCaller::convertVI2paired(t_variant_info vi1, pair_t& pt1, std::vector<dou
   double log_lik_bb_AA   =  -10	* lik_bb(ab[4], ab[5], vi1.ref_RD + vi1.alt_RD, vi1.alt_RD); 
 
   #ifdef DEBUG
+  std::cout<<"RR "<<RR;
+  std::cout<<"RA "<<RA;
+  std::cout<<"AA "<<AA;
   cout<<"\nbefore norm liks "<<log_lik_bb_RR<<"\t"<<log_lik_bb_RA<<"\t"<<log_lik_bb_AA;  
   #endif
   double norm_bb_liks[3];
