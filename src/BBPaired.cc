@@ -74,9 +74,9 @@ int BBPaired::parseArguments(int argc, char* argv[], ArgsPassed& A1)
 					  {"alphaAA", 1, 0, 8},
 					  {"betaAA", 1, 0, 9},
 					  {"ref", 1, 0, 10},
-					  {"RD_cutoff", 1, 0, 11},
+					  {"pp_cutoff", 1, 0, 11},
 					  {"skip_mpileup", 1, 0, 12},
-					  {"PP_cutoff", 1, 0, 13},
+					  {"rd_cutoff", 1, 0, 13},
 
   };
   optind = 0;
