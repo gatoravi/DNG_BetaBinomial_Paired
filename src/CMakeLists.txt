@@ -9,22 +9,22 @@ set(SAMTOOLS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/samtools-0.1.18")
 #RInside_cmake
 set(NUM_TRUNC_CHARS 2)
 
-set (RPATH "R")
+set (R_PATH "R")
 set (RSCRIPT_PATH "Rscript")
 
 if (CMAKE_HOST_WIN32)
   execute_process(COMMAND ${RSCRIPT_PATH} -e "cat(.Platform$r_arch)"
     OUTPUT_VARIABLE R_ARCH)
 
-  execute_process(COMMAND ${RPATH} --arch ${R_ARCH} RHOME
+  execute_process(COMMAND ${R_PATH} --arch ${R_ARCH} RHOME
     OUTPUT_VARIABLE R_HOME)
 
   string(REPLACE "\\" "/" R_HOME ${R_HOME})
 
-  set (RPATH ${R_HOME}/bin/R)
+  set (R_PATH ${R_HOME}/bin/R)
 endif()
 
-execute_process(COMMAND ${RPATH} CMD config --cppflags
+execute_process(COMMAND ${R_PATH} CMD config --cppflags
   OUTPUT_VARIABLE RCPPFLAGS)
 
 if (CMAKE_HOST_WIN32)
@@ -36,7 +36,7 @@ endif()
 string(SUBSTRING ${RCPPFLAGS} ${NUM_TRUNC_CHARS} -1 RCPPFLAGS)
 include_directories(${RCPPFLAGS})
 
-execute_process(COMMAND ${RPATH} CMD config --ldflags
+execute_process(COMMAND ${R_PATH} CMD config --ldflags
   OUTPUT_VARIABLE RLDFLAGS)
 string(LENGTH ${RLDFLAGS} RLDFLAGS_LEN)
 
@@ -128,13 +128,13 @@ else()
 
 endif()
 
-execute_process(COMMAND ${RPATH} CMD config CXXFLAGS
+execute_process(COMMAND ${R_PATH} CMD config CXXFLAGS
   OUTPUT_VARIABLE RCXXFLAGS)
 
-execute_process(COMMAND ${RPATH} CMD config BLAS_LIBS
+execute_process(COMMAND ${R_PATH} CMD config BLAS_LIBS
   OUTPUT_VARIABLE RBLAS)
 
-execute_process(COMMAND ${RPATH} CMD config LAPACK_LIBS
+execute_process(COMMAND ${R_PATH} CMD config LAPACK_LIBS
   OUTPUT_VARIABLE RLAPACK)
 
 set(CMAKE_CXX_FLAGS "-W -Wall -pedantic -Wextra ${CMAKE_CXX_FLAGS}")
