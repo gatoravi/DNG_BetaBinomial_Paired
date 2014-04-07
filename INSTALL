@@ -1,0 +1,26 @@
+Denovogear-bb for paired-samples. Ver0.01
+
+These are the installation instructions for Linux, Unix.
+
+You can obtain the latest source code from Github, either download a zip file or clone this repo.
+To clone this repo:
+Type 
+	git clone https://github.com/gatoravi/DNG_BetaBinomial_Paired.git
+
+This code depends on the RInside, RCpp and Samtools libraries.
+Currently Samtools is packaged with this package but this is poised to change in the future.
+
+To Install Rcpp and RInside:
+1. Make sure you have a working version of R, you need R version>=3.0.
+2. Open R and run "install.packages("Rcpp")", "install.packages("RInside")
+
+Samtools is a part of this repo, cd into the samtools directory and run make, do the same for bcftools.
+cd src/samtools-0.1.18/
+make
+cd bcftools
+make
+This will create the necessary library libbam.a which will be linked with the DNG code.
+
+The package also contains an R script named "BBFit.R" in the src/ folder. Move this script to a directory called ~/src/ This is inconvenient but we will hopefully move to a more streamlined installation procedure soon. This script is called by the DNG code.
+
+
