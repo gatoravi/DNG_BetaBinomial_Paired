@@ -31,4 +31,8 @@ To Install the DNG package:
     cd build
     cmake ..
     make
+    make install
+
 Doing the install in a separate build directory is usually recommended as it separates the source from any files created during the install. This ensures a clean src directory.
+
+For instructions on how to run the code see README.txt. The file src/callDNGBB.sh has an example command for running the code.
