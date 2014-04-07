@@ -15,12 +15,18 @@ To Install Rcpp, RcppClassic and RInside:
 2. Open R and run "install.packages("Rcpp")", "install.packages("RcppClassic") and "install.packages("RInside")
 
 Samtools is a part of this repo, cd into the samtools directory and run make, do the same for bcftools.
+cd src/samtools-0.1.18/bcftools/
+make
 cd src/samtools-0.1.18/
-make
-cd bcftools
-make
+make lib
 This will create the necessary library libbam.a which will be linked with the DNG code.
 
 The package also contains an R script named "BBFit.R" in the src/ folder. Move this script to a directory called ~/src/ This is inconvenient but we will hopefully move to a more streamlined installation procedure soon. This script is called by the DNG code.
 
-
+To Install the DNG package:
+    cd DNG_BetaBinomial_Paired
+    mkdir build
+    cd build
+    cmake ..
+    make
+Doing the install in a separate build directory is usually recommended as it separates the source from any files created during the install. This ensures a clean src directory.

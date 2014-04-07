@@ -19,7 +19,7 @@ if (CMAKE_HOST_WIN32)
   execute_process(COMMAND ${RPATH} --arch ${R_ARCH} RHOME
     OUTPUT_VARIABLE R_HOME)
 
-  string(REPLACE "\\" "/" R_HOME ${R_HOME})	
+  string(REPLACE "\\" "/" R_HOME ${R_HOME})
 
   set (RPATH ${R_HOME}/bin/R)
 endif()
@@ -27,7 +27,7 @@ endif()
 execute_process(COMMAND ${RPATH} CMD config --cppflags
   OUTPUT_VARIABLE RCPPFLAGS)
 
-if (CMAKE_HOST_WIN32)					
+if (CMAKE_HOST_WIN32)
   if (${RCPPFLAGS} MATCHES "[-][I]([^ ;])+")
     set (RCPPFLAGS ${CMAKE_MATCH_0})
   endif()
@@ -98,7 +98,7 @@ if (CMAKE_HOST_WIN32)
   string(SUBSTRING ${RINSIDELIBS} ${RLibPathLen} -1 RINSIDELIBS_l)
 
   link_directories(${RINSIDELIBS_L})
-else()	
+else()
   if (${RCPPLIBS} MATCHES "[-][L]([^ ;])+")
     string(SUBSTRING ${CMAKE_MATCH_0} ${NUM_TRUNC_CHARS} -1 RCPPLIBS_L)
     link_directories(${RCPPLIBS_L} )
@@ -106,6 +106,10 @@ else()
 
   if (${RCPPLIBS} MATCHES "[-][l][R]([^;])+")
     string(SUBSTRING ${CMAKE_MATCH_0} ${NUM_TRUNC_CHARS} -1 RCPPLIBS_l)
+  endif()
+
+  if (${RCPPLIBS} MATCHES "([^;])+[.][a]")
+    set(RCPPLIBS_l ${RCPPLIBS})
   endif()
 
   if (${RINSIDELIBS} MATCHES "[-][L]([^ ;])+")
@@ -116,6 +120,12 @@ else()
   if (${RINSIDELIBS} MATCHES "[-][l][R]([^;])+")
     string(SUBSTRING ${CMAKE_MATCH_0} ${NUM_TRUNC_CHARS} -1 RINSIDELIBS_l)
   endif()
+
+  if (${RINSIDELIBS} MATCHES "([^;])+[.][a]")
+    set(RINSIDELIBS_l ${RINSIDELIBS})
+  endif()
+
+
 endif()
 
 execute_process(COMMAND ${RPATH} CMD config CXXFLAGS
